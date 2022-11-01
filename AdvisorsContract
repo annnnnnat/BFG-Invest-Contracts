@@ -33,6 +33,25 @@ contract AdvisorsContract is Ownable {
             itoken = _itoken;
        }
 
+    function _transferUnlocked(uint256 daysPast, address _receiver) internal{
+        
+        //tokens for daysPast days
+        uint256 calTokens = ownedBFG[_receiver] * daysPast * percentage / decimal;
+        
+        if(calTokens > lockedBFG[_receiver]){
+            calTokens = lockedBFG[_receiver];
+        }
+
+        //effect
+        balance-=calTokens;
+        lockedBFG[_receiver] -= calTokens;
+        
+        lastUnlockTime[_receiver] = lastUnlockTime[_receiver] + (daysPast * 1 days);
+
+        //transfer
+        itoken.safeTransfer(_receiver,calTokens);
+        emit TransferSent(_receiver,calTokens);
+	}
 
     function addWhiteList(address user,uint256 amount) external onlyOwner {
         uint256 amountConverted = amount * 1e18;
@@ -57,26 +76,6 @@ contract AdvisorsContract is Ownable {
 
 	    whiteList[user] = true;
     }
-
-    function _transferUnlocked(uint256 daysPast, address _receiver) internal{
-        
-        //tokens for daysPast days
-        uint256 calTokens = ownedBFG[_receiver] * daysPast * percentage / decimal;
-        
-        if(calTokens > lockedBFG[_receiver]){
-            calTokens = lockedBFG[_receiver];
-        }
-
-        //effect
-        balance-=calTokens;
-        lockedBFG[_receiver] -= calTokens;
-        
-        lastUnlockTime[_receiver] = lastUnlockTime[_receiver] + (daysPast * 1 days);
-
-        //transfer
-        itoken.safeTransfer(_receiver,calTokens);
-        emit TransferSent(_receiver,calTokens);
-	}
 
     function withdraw() external{
         require(whiteList[msg.sender] == true, "Not WhiteListed");
