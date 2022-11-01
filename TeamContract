@@ -117,7 +117,8 @@ event TransferSent(address indexed _destAddr,uint _amount);
                 if(newTokens > balance){
                     newTokens = balance;
                 }
-                for (uint8 i = 0; i < members.length; i++) {  //for loop example dont need /100
+                uint256 memberLen = members.length;
+                for (uint8 i = 0; i < memberLen; i++) {  //for loop example dont need /100
                     uint256 memberTokens = shares[members[i]] * newTokens / 100; 
                     balances[members[i]] += memberTokens;
                 }
