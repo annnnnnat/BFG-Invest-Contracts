@@ -78,7 +78,7 @@ contract AdvisorsContract is Ownable {
         emit TransferSent(_receiver,calTokens);
 	}
 
-    function Withdraw() external{
+    function withdraw() external{
         require(whiteList[msg.sender] == true, "Not WhiteListed");
         require(lockedBFG[msg.sender] > 0,"No Unlocked BFG");
         
