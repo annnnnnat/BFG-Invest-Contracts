@@ -34,7 +34,7 @@ contract PrivateRoundContract is Ownable {
        }
 
     function addWhiteList(address user,uint256 amount) external onlyOwner{
-        uint256 amountConverted = amount * 1e18;
+        uint256 amountConverted = amount;
 
         if (maxBalance == 0){
                 uint256 _balance = itoken.balanceOf(address(this));
