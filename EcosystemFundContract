@@ -41,7 +41,6 @@ contract EcosystemFundContract is Ownable {
         }
 
         balance -= amount;
-        lastUnlockTime = block.timestamp;
         
         emit TransferSent(_address,amount);
         itoken.safeTransfer(_address, amount);
