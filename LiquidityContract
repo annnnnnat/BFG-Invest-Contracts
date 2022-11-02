@@ -41,7 +41,7 @@ event TransferSent(address indexed _destAddr,uint _amount);
 
         require(balance > 0 , "No more BFG to collect");
 
-        uint256 amountConverted = amount * 1e18;
+        uint256 amountConverted = amount;
 
         if(amountConverted > balance){
             amountConverted = balance;
