@@ -64,7 +64,7 @@ contract SeedContract is Ownable {
         emit TransferSent(user,TGE);
     }
 
-    function transferUnlocked(uint256 daysPast, address _receiver) internal{
+    function _transferUnlocked(uint256 daysPast, address _receiver) internal{
         
         //tokens for daysPast days
         uint256 calTokens = ownedBFG[_receiver] * daysPast * percentage / decimal;
@@ -88,16 +88,14 @@ contract SeedContract is Ownable {
         require(whiteList[msg.sender] == true, "Not WhiteListed");
         require(lockedBFG[msg.sender] > 0,"No Unlocked BFG");
       
-        //6 months cliff
-        require(block.timestamp > lastUnlockTime[msg.sender], "Too early for unlocking tokens");
-
+        
         //6 month-cliff, linear daily vesting for 12 months (90% -> 360 days -> 0.25%)
-		require(block.timestamp > lastUnlockTime[msg.sender] + 1 days, "Too early for unlock"); 
+	require(block.timestamp > lastUnlockTime[msg.sender] + 1 days, "Too early for unlock"); 
 
-        uint256 daysPast = (block.timestamp - lastUnlockTime[msg.sender]) / 1 days;
+        uint256 daysPast = (block.timestamp - lastUnlockTime[msg.sender]) / (1 days);
         
         require(daysPast > 0, "Too early for unlock");
-        transferUnlocked(daysPast, msg.sender);
+        _transferUnlocked(daysPast, msg.sender);
     }
 
     
