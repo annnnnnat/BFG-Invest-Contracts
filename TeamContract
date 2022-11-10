@@ -87,11 +87,6 @@ contract TeamContract is Ownable {
             return;
         }
 
-        if (balance == 0) {
-            uint256 newBalance = itoken.balanceOf(address(this));
-            balance = newBalance;
-        }
-
         // unlock 0,104% linear daily 32 months (100%) (960 days => 0,104% daily unlock)
 
         require(
